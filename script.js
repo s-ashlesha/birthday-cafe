@@ -309,7 +309,8 @@ function showFinalMessage() {
     <p class="final-sub">
       Happy Birthday, my love 🎂<br>
       May every day feel as warm<br>
-      as this little café corner.
+      as this little café corner.<br>
+      <small style="opacity: 0.8; font-size: 0.8em; margin-top: 10px; display: block;">by Ashlesha (Kuki)</small>
     </p>
     <div class="final-restart" id="btn-restart">↺  Play Again</div>
   `;
