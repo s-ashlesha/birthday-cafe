@@ -231,6 +231,7 @@ html, body {
   height: 560px;
   overflow: hidden;
   box-shadow: 0 0 0 4px var(--warm-brown), 0 0 0 8px var(--gold), 0 12px 40px rgba(0,0,0,0.15);
+  transform-origin: top center;
   background: #fdf0e3;
 }
 
@@ -696,20 +697,71 @@ html, body {
 }
 
 /* ============================================================
-   RESPONSIVE — scale the scene on small screens
+   RESPONSIVE — Scale scene to fit mobile screens
 ============================================================ */
-@media (max-width: 860px) {
+
+/* ── Portrait orientation fix ── */
+@media (max-height: 500px) and (orientation: landscape) {
   .scene-container {
-    transform-origin: top center;
-    transform: scale(0.75);
+    transform: scale(0.6);
+    margin-top: -100px;
+  }
+}
+
+@media (max-width: 820px) {
+  .scene-container {
+    transform: scale(0.9);
+    margin-top: -30px;
+  }
+}
+
+@media (max-width: 740px) {
+  .scene-container {
+    transform: scale(0.8);
     margin-top: -60px;
   }
 }
-@media (max-width: 640px) {
+
+@media (max-width: 660px) {
+  .scene-container {
+    transform: scale(0.7);
+    margin-top: -85px;
+  }
+  .envelope { width: 340px; }
+  .envelope-body { width: 340px; height: 230px; }
+}
+
+@media (max-width: 580px) {
+  .scene-container {
+    transform: scale(0.6);
+    margin-top: -110px;
+  }
+}
+
+@media (max-width: 500px) {
   .scene-container {
     transform: scale(0.5);
     margin-top: -140px;
   }
-  .envelope       { width: 300px; }
-  .envelope-body  { width: 300px; height: 200px; }
+  .envelope { width: 300px; }
+  .envelope-body { width: 300px; height: 200px; }
+  .envelope-flap { height: 100px; }
+  .letter-greeting { font-size: 18px; }
+  .letter-msg { font-size: 14px; }
+}
+
+@media (max-width: 420px) {
+  .scene-container {
+    transform: scale(0.42);
+    margin-top: -160px;
+  }
+  .final-sub { font-size: 18px; }
+  .letter-content { padding: 4px 10px; }
+}
+
+@media (max-width: 360px) {
+  .scene-container {
+    transform: scale(0.38);
+    margin-top: -175px;
+  }
 }
