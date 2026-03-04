@@ -1,8 +1,3 @@
 {
-  "version": 2,
-  "name": "birthday-cafe",
-  "cleanUrls": true,
-  "framework": null,
-  "installCommand": "echo 'No install needed'",
-  "buildCommand": "echo 'No build needed'"
+  "cleanUrls": true
 }
