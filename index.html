@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday ❤️</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       SCENE 1 — Birthday Card
+  ============================================================ -->
+  <div id="scene-card" class="scene active">
+    <div class="card-wrapper">
+
+      <!-- Pixel envelope -->
+      <div class="envelope" id="envelope">
+        <div class="envelope-body">
+          <div class="envelope-flap" id="envelope-flap"></div>
+          <div class="envelope-letter" id="envelope-letter">
+            <div class="letter-content" id="letter-content">
+              <div class="letter-stars">✦ ✦ ✦</div>
+              <p class="letter-greeting">Happy Birthday Lovie</p>
+              <p class="letter-heart">❤️</p>
+              <p class="letter-msg">You make life feel warm and cozy.<br>Every moment with you is a little adventure.<br>Here's to you — the one who makes<br>everything brighter. 🌟</p>
+              <div class="letter-stars">✦ ✦ ✦</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confetti container -->
+      <div class="confetti-container" id="confetti-container"></div>
+
+      <!-- Card scene instruction -->
+      <div class="card-instruction" id="card-instruction">
+        <button class="pastel-btn" id="btn-open-card">Open Card</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCENE 2 — Café Scene
+  ============================================================ -->
+  <div id="scene-cafe" class="scene">
+    <div class="scene-container">
+
+      <!-- Background layer -->
+      <div class="cafe-bg"></div>
+
+      <!-- Decorative background elements -->
+      <img src="assets/ui/lamp.png"  class="pixel prop lamp"  alt="lamp"  />
+      <img src="assets/ui/plant.png" class="pixel prop plant" alt="plant" />
+
+      <!-- Banner -->
+      <div class="banner-wrapper">
+        <img src="assets/ui/banner_empty.png" class="pixel banner-img" alt="Banner background" />
+        <div class="banner-text-overlay">
+          Happy Birthday Dhrisit(Kuku) <span class="heart">❤️</span>
+        </div>
+      </div>
+
+      <!-- Characters (idle) -->
+      <div class="character bf-char" id="bf-char">
+        <img src="assets/characters/bf_idle.png" class="pixel char-img" id="bf-img" alt="Boyfriend" />
+      </div>
+      <div class="character girl-char" id="girl-char">
+        <img src="assets/characters/girl_idle.png" class="pixel char-img" id="girl-img" alt="Girl" />
+      </div>
+
+      <!-- Table -->
+      <img src="assets/ui/table.png" class="pixel prop table-prop" alt="table" />
+
+      <!-- Cups on table (idle) -->
+      <img src="assets/props/coffee_cup.png" class="pixel prop coffee-cup" id="coffee-cup" alt="coffee" />
+      <img src="assets/props/chai_cup.png"   class="pixel prop chai-cup"   id="chai-cup"   alt="chai"   />
+
+      <!-- Cake (hidden until scene 3) -->
+      <div class="cake-wrapper" id="cake-wrapper">
+        <img src="assets/props/cake_fixed.png"   class="pixel prop cake-img"   id="cake-img"   alt="cake" />
+        <div class="candle-wrapper" id="candle-wrapper">
+          <img src="assets/props/candle.png" class="pixel prop candle-img" id="candle-img" alt="candle" />
+          <div class="flame" id="candle-flame">🔥</div>
+        </div>
+      </div>
+
+      <!-- Gift (hidden until scene 4) -->
+      <div class="gift-wrapper hidden" id="gift-wrapper">
+        <img src="assets/props/gift_closed.png" class="pixel prop gift-img" id="gift-img" alt="gift" />
+        <img src="assets/props/chocolate.png" class="pixel prop gift-item" id="gift-item-chocolate" alt="chocolate" />
+        <img src="assets/props/mouse.png" class="pixel prop gift-item" id="gift-item-mouse" alt="mouse" />
+        <img src="assets/props/flowers.png" class="pixel prop gift-item" id="gift-item-flowers" alt="flowers" />
+        <img src="assets/props/laptop_stand.png" class="pixel prop gift-item" id="gift-item-stand" alt="laptop" />
+      </div>
+
+      <!-- Effects layer -->
+      <div class="effects-layer" id="effects-layer"></div>
+
+      <!-- Steam effects over cups -->
+      <div class="steam coffee-steam" id="coffee-steam">
+        <span class="steam-wisp">〜</span>
+        <span class="steam-wisp">〜</span>
+      </div>
+      <div class="steam chai-steam" id="chai-steam">
+        <span class="steam-wisp">〜</span>
+        <span class="steam-wisp">〜</span>
+      </div>
+
+      <!-- Smoke puff (shown after blowing candle) -->
+      <div class="smoke-puff hidden" id="smoke-puff">💨</div>
+
+      <!-- Scene instruction + button -->
+      <div class="scene-hud" id="scene-hud">
+        <p class="hud-text" id="hud-text">Click anywhere to continue...</p>
+        <button class="pastel-btn continue-btn" id="btn-continue">Continue</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

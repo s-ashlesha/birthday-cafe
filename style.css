@@ -1,0 +1,715 @@
+/* ============================================================
+   PIXEL ART BIRTHDAY WEBSITE — style.css
+   Cozy retro RPG café scene aesthetic
+============================================================ */
+
+/* ── Pixel-perfect rendering ── */
+* { image-rendering: pixelated; image-rendering: crisp-edges; box-sizing: border-box; }
+
+/* ── Google Pixel Font ── */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* ── CSS Variables ── */
+:root {
+  --warm-brown:  #a67c52;
+  --deep-brown:  #8b5a2b;
+  --gold:        #f5c58a;
+  --warm-cream:  #fffcf5;
+  --blush:       #fabfb7;
+  --sage:        #a3cfb4;
+  --sky-blue:    #b5d8eb;
+  --dark-bg:     #faece3;
+  --card-bg:     #fffdf8;
+}
+
+/* ── Reset & Body ── */
+html, body {
+  margin: 0; padding: 0;
+  width: 100%; height: 100%;
+  background: var(--dark-bg);
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  cursor: default;
+}
+
+/* ── Pixel utility ── */
+.pixel { image-rendering: pixelated; display: block; }
+
+/* ============================================================
+   SCENES
+============================================================ */
+.scene {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+.scene.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ============================================================
+   SCENE 1 — BIRTHDAY CARD
+============================================================ */
+#scene-card {
+  background: radial-gradient(ellipse at 50% 40%, #ffefd5 0%, #fae1cd 100%);
+}
+
+.card-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+/* ── Pixel Envelope ── */
+.envelope {
+  position: relative;
+  width: 380px;
+  cursor: pointer;
+}
+
+.envelope-body {
+  position: relative;
+  width: 380px;
+  height: 260px;
+  background: var(--gold);
+  border: 4px solid var(--warm-brown);
+  box-shadow: 6px 6px 0 var(--deep-brown), inset 0 0 0 4px #c87d1a;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.envelope-body:hover {
+  box-shadow: 8px 8px 0 var(--deep-brown), inset 0 0 0 4px #c87d1a;
+}
+
+/* Flap on top */
+.envelope-flap {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 130px;
+  background: #e8941a;
+  clip-path: polygon(0 0, 50% 60%, 100% 0);
+  border-bottom: 3px solid var(--warm-brown);
+  transform-origin: top center;
+  transition: transform 0.6s ease;
+  z-index: 2;
+}
+.envelope-flap.open {
+  transform: rotateX(180deg);
+}
+
+/* Red wax seal */
+.envelope-body::after {
+  content: '❤';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 32px;
+  color: #c0392b;
+  text-shadow: 2px 2px 0 #7b0c0c;
+  z-index: 1;
+}
+
+/* Letter that slides out */
+.envelope-letter {
+  position: absolute;
+  bottom: 0; left: 10px; right: 10px;
+  height: 90%;
+  background: var(--card-bg);
+  border: 3px solid #d4a657;
+  transform: translateY(100%);
+  transition: transform 0.7s ease 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+.envelope-letter.open {
+  transform: translateY(-20%);
+}
+
+.letter-content {
+  padding: 8px 16px;
+  text-align: center;
+  line-height: 1.6;
+  opacity: 0;
+  transition: opacity 0.4s ease 0.8s;
+}
+.letter-content.visible { opacity: 1; }
+
+.letter-stars {
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: 8px;
+  margin: 6px 0;
+}
+.letter-greeting {
+  font-size: 22px;
+  font-weight: 600;
+  color: #8b5a2b;
+  margin: 0 0 5px 0;
+}
+.letter-heart {
+  font-size: 28px;
+  margin: 5px 0;
+  color: #e74c3c;
+}
+.letter-msg {
+  font-size: 15px;
+  color: #5c3d1e;
+  line-height: 1.4;
+  margin: 5px 0;
+}
+
+/* ── Confetti ── */
+.confetti-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+}
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  opacity: 0;
+  animation: confetti-fall 2.5s ease forwards;
+  image-rendering: pixelated;
+}
+@keyframes confetti-fall {
+  0%   { transform: translateY(-20px) rotate(0deg);   opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0.3; }
+}
+
+/* ── Open Card Button ── */
+.card-instruction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.pastel-btn, .final-restart {
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #8b5a2b;
+  cursor: pointer;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 30px; /* Soft pill shape */
+  background: var(--blush); /* Soft pastel pink/blush */
+  box-shadow: 0 4px 12px rgba(250, 191, 183, 0.4);
+  transition: transform 0.2s, background 0.2s;
+  text-align: center;
+  display: inline-block;
+}
+.pastel-btn:hover, .final-restart:hover { 
+  background: #f8aca2; 
+  transform: translateY(-2px);
+}
+.pastel-btn:active, .final-restart:active { transform: scale(0.97); }
+
+.continue-btn {
+  margin-top: 10px;
+}
+
+/* ============================================================
+   SCENE 2+ — CAFÉ SCENE CONTAINER
+============================================================ */
+.scene-container {
+  position: relative;
+  width: 800px;
+  height: 560px;
+  overflow: hidden;
+  box-shadow: 0 0 0 4px var(--warm-brown), 0 0 0 8px var(--gold), 0 12px 40px rgba(0,0,0,0.15);
+  background: #fdf0e3;
+}
+
+/* ── Café Background (CSS-drawn cozy café) ── */
+.cafe-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    /* Floor boards */
+    repeating-linear-gradient(90deg, transparent 0px, transparent 79px, rgba(200,160,130,0.3) 80px, rgba(200,160,130,0.3) 81px),
+    /* Floor */
+    linear-gradient(to bottom, transparent 60%, #f4d3ba 60%, #ead0b9 75%, #e1baa4 100%),
+    /* Wall with warm pastel gradient */
+    linear-gradient(to bottom,
+      #fef6ee 0%, #fef0e2 25%, #fcecdb 45%, #fae5d1 55%, transparent 56%, transparent 100%
+    );
+  z-index: 0;
+}
+
+/* Wall decorations - glows removed */
+.cafe-bg::before {
+  display: none;
+}
+
+/* Warm ambient glow from lamp area - removed for pastel */
+.cafe-bg::after {
+  display: none;
+}
+
+/* ── Lamp ── */
+.lamp {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 130px;
+  width: auto;
+  z-index: 2;
+}
+
+/* Lamp glow effect - removed */
+.lamp::after {
+  display: none;
+}
+
+/* ── Plant ── */
+.plant {
+  position: absolute;
+  right: 24px;
+  bottom: 200px;
+  height: 120px;
+  width: auto;
+  z-index: 2;
+}
+
+/* ── Banner Wrapper & Text ── */
+.banner-wrapper {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 64px;
+  width: auto;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: banner-pulse 3s ease-in-out infinite;
+}
+
+.banner-img {
+  height: 100%;
+  width: auto;
+  display: block;
+}
+
+.banner-text-overlay {
+  position: absolute;
+  width: 80%;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #5d4037; /* Deep cozy brown */
+  letter-spacing: 0.2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding-bottom: 2px; /* Visual adjustment for banner curve */
+}
+
+.banner-text-overlay .heart {
+  color: #ff5252;
+  font-size: 18px;
+}
+
+@keyframes banner-pulse {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50%       { transform: translateX(-50%) scale(1.02); }
+}
+
+/* ── Characters ── */
+.character {
+  position: absolute;
+  bottom: 168px;
+  z-index: 6;
+  animation: char-bob 2.5s ease-in-out infinite;
+}
+@keyframes char-bob {
+  0%, 100% { transform: translateY(0);   }
+  50%       { transform: translateY(-5px); }
+}
+
+.char-img {
+  height: 180px;
+  width: auto;
+  transition: height 0.3s;
+}
+
+.bf-char   { left: 80px;  }
+.girl-char { right: 80px; }
+
+/* ── Table ── */
+.table-prop {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 160px;
+  width: auto;
+  z-index: 4;
+}
+
+/* ── Cups ── */
+.coffee-cup {
+  position: absolute;
+  bottom: 228px;
+  left: 265px;
+  height: 52px;
+  width: auto;
+  z-index: 5;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s;
+}
+.chai-cup {
+  position: absolute;
+  bottom: 220px;
+  right: 262px;
+  height: 56px;
+  width: auto;
+  z-index: 5;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s;
+}
+
+/* ── Cups Clinking Animation ── */
+.coffee-cup.clinking {
+  transform: translate(60px, -20px) rotate(15deg);
+}
+.chai-cup.clinking {
+  transform: translate(-50px, -20px) rotate(-15deg);
+}
+
+/* ── Steam ── */
+.steam {
+  position: absolute;
+  z-index: 7;
+  display: flex;
+  gap: 4px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  pointer-events: none;
+  transition: transform 0.6s ease 0.3s;
+}
+.coffee-steam { bottom: 278px; left: 276px; }
+.chai-steam   { bottom: 272px; right: 272px; }
+
+.coffee-steam.clinking-steam {
+  transform: translate(60px, -20px);
+}
+.chai-steam.clinking-steam {
+  transform: translate(-50px, -20px);
+}
+
+.steam-wisp {
+  display: inline-block;
+  animation: steam-rise 2s ease-in-out infinite;
+  font-style: normal;
+}
+.steam-wisp:nth-child(2) { animation-delay: 0.5s; animation-duration: 2.3s; }
+
+@keyframes steam-rise {
+  0%   { transform: translateY(0)    scaleX(1);   opacity: 0.7; }
+  50%  { transform: translateY(-12px) scaleX(1.3); opacity: 0.4; }
+  100% { transform: translateY(-24px) scaleX(0.8); opacity: 0;   }
+}
+
+/* ── Cake ── */
+.cake-wrapper {
+  position: absolute;
+  bottom: 220px;
+  left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  z-index: 5;
+  opacity: 0;
+  transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease;
+}
+.cake-wrapper.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+.cake-img {
+  height: 60px;
+  width: auto;
+  display: block;
+}
+
+.candle-wrapper {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  cursor: pointer;
+}
+.candle-img {
+  height: 28px;
+  width: auto;
+}
+.flame {
+  font-size: 16px;
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: flame-flicker 0.4s ease-in-out infinite alternate;
+}
+.flame.out { display: none; }
+@keyframes flame-flicker {
+  0%   { transform: translateX(-50%) scale(1)   rotate(-3deg); }
+  100% { transform: translateX(-50%) scale(1.15) rotate(3deg);  }
+}
+
+/* ── Smoke puff ── */
+.smoke-puff {
+  position: absolute;
+  bottom: 310px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 28px;
+  z-index: 8;
+  animation: smoke-rise 1.5s ease forwards;
+}
+@keyframes smoke-rise {
+  0%   { transform: translateX(-50%) translateY(0) scale(0.5); opacity: 1; }
+  100% { transform: translateX(-50%) translateY(-60px) scale(2); opacity: 0; }
+}
+
+/* ── Gift ── */
+.gift-wrapper {
+  position: absolute;
+  bottom: 200px;
+  right: 160px;
+  z-index: 5;
+  cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.5s ease, right 0.5s ease, bottom 0.5s ease;
+}
+.gift-wrapper.center {
+  right: auto;
+  left: 50%;
+  bottom: 260px;
+  transform: translateX(-50%) scale(1.5);
+  z-index: 20;
+}
+.gift-wrapper:hover:not(.center) { transform: scale(1.08) rotate(-2deg); }
+.gift-img {
+  height: 72px;
+  width: auto;
+  transition: filter 0.3s;
+  position: relative;
+  z-index: 5;
+}
+
+.gift-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  height: 54px;
+  width: auto;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+}
+
+.gift-item.pop-out-1 {
+  transform: translate(-150%, -100%) scale(1);
+  opacity: 1;
+}
+
+.gift-item.pop-out-2 {
+  transform: translate(50%, -140%) scale(1);
+  opacity: 1;
+}
+
+.gift-item.pop-out-3 {
+  transform: translate(-50%, -180%) scale(1.5);
+  opacity: 1;
+}
+
+.gift-item.pop-out-4 {
+  transform: translate(90%, 20%) scale(1);
+  opacity: 1;
+}
+#gift-item-stand {
+  height: 54px;
+}
+
+/* ── Effects Layer ── */
+.effects-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9;
+}
+
+.float-heart {
+  position: absolute;
+  font-size: 20px;
+  pointer-events: none;
+  animation: float-up 2s ease forwards;
+}
+@keyframes float-up {
+  0%   { transform: translateY(0) scale(0.8); opacity: 1; }
+  100% { transform: translateY(-140px) scale(1.3) rotate(15deg); opacity: 0; }
+}
+
+.float-sparkle {
+  position: absolute;
+  color: var(--gold);
+  font-size: 18px;
+  pointer-events: none;
+  animation: sparkle-anim 1.5s ease forwards;
+}
+@keyframes sparkle-anim {
+  0%   { transform: scale(0) rotate(0deg);   opacity: 1; }
+  50%  { transform: scale(1.5) rotate(180deg); opacity: 1; }
+  100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+
+/* ── HUD / instruction ── */
+.scene-hud {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.hud-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #8b5a2b;
+  margin: 0;
+  text-shadow: none;
+  letter-spacing: 0.5px;
+  animation: hud-blink 2s step-end infinite;
+}
+@keyframes hud-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.continue-btn { height: 44px; }
+
+/* ── Hidden util ── */
+.hidden { display: none !important; }
+
+/* ── Cheers animation ── */
+@keyframes cheers-clink {
+  0%   { transform: translateX(0); }
+  30%  { transform: translateX(20px); }
+  60%  { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+@keyframes cheers-clink-right {
+  0%   { transform: translateX(0); }
+  30%  { transform: translateX(-20px); }
+  60%  { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}
+
+.bf-char.cheering   { animation: cheers-clink 0.6s ease 0.2s, char-bob 2.5s ease-in-out infinite 0.8s; }
+.girl-char.cheering { animation: cheers-clink-right 0.6s ease 0.2s, char-bob 2.5s ease-in-out infinite 0.8s; }
+
+/* ── Big hearts final burst ── */
+.big-heart {
+  position: absolute;
+  font-size: 32px;
+  pointer-events: none;
+  animation: big-heart-float 3s ease forwards;
+}
+@keyframes big-heart-float {
+  0%   { transform: translateY(0) scale(0); opacity: 1; }
+  30%  { transform: translateY(-60px) scale(1.3); opacity: 1; }
+  100% { transform: translateY(-180px) scale(0.8); opacity: 0; }
+}
+
+/* ── Final message overlay ── */
+.final-message {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(254, 246, 238, 0.85); /* Soft bright pastel translucent overlay */
+  z-index: 20;
+  gap: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+.final-message.visible { opacity: 1; pointer-events: all; }
+
+.final-banner-wrapper {
+  position: relative;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.final-banner-img {
+  height: 100%;
+  width: auto;
+}
+.final-banner-text {
+  position: absolute;
+  font-family: 'Poppins', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #5d4037;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 4px;
+}
+.final-sub {
+  font-size: 20px;
+  font-weight: 600;
+  color: #8b5a2b; /* Deep brown text for contrast on light background */
+  text-align: center;
+  line-height: 1.6;
+  text-shadow: none;
+  max-width: 360px;
+}
+.final-restart {
+  margin-top: 16px;
+}
+
+/* ============================================================
+   RESPONSIVE — scale the scene on small screens
+============================================================ */
+@media (max-width: 860px) {
+  .scene-container {
+    transform-origin: top center;
+    transform: scale(0.75);
+    margin-top: -60px;
+  }
+}
+@media (max-width: 640px) {
+  .scene-container {
+    transform: scale(0.5);
+    margin-top: -140px;
+  }
+  .envelope       { width: 300px; }
+  .envelope-body  { width: 300px; height: 200px; }
+}
