@@ -336,7 +336,7 @@ function spawnSparkles(cx, cy, count) {
   for (let i = 0; i < count; i++) {
     const el = document.createElement('div');
     el.className = 'float-sparkle';
-    el.textContent = ['✦','✧','⭐','💫','✨'][Math.floor(Math.random()*5)];
+    el.textContent = ['✦','✧','⭐','✨'][Math.floor(Math.random()*4)];
     el.style.cssText = `
       left: ${cx + (Math.random()-0.5)*140}px;
       top:  ${cy + (Math.random()-0.5)*100}px;
@@ -353,7 +353,7 @@ function spawnHearts() {
   positions.forEach((x, i) => {
     const el = document.createElement('div');
     el.className = 'big-heart';
-    el.textContent = ['❤️','💕','💖','💗','❤'][i % 5];
+    el.textContent = ['❤️','💕','💖','💗'][i % 4];
     el.style.cssText = `
       left: ${x}px;
       top:  ${300 + Math.random()*80}px;
