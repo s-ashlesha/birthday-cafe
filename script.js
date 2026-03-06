@@ -7,7 +7,7 @@
  */
 
 // ── State ──────────────────────────────────────────────────
-let currentScene = 1;   // 1=card  2=café  3=cake  4=gift  5=cheers
+let currentScene = 1;
 let cardOpened = false;
 let candleLit  = true;
 let giftOpened = false;
@@ -50,10 +50,34 @@ const hudText    = document.getElementById('hud-text');
 const btnContinue= document.getElementById('btn-continue');
 
 // ============================================================
+//  RESPONSIVE SCALING
+//  Scales the 800×560 café scene to fit any screen size.
+//  The CSS custom property --scene-scale drives
+//  transform: scale(...) on .scene-container.
+// ============================================================
+
+function setSceneScale() {
+  // 800 × 560 is the fixed design size of the café scene
+  const DESIGN_W = 800;
+  const DESIGN_H = 560;
+
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  // Scale to fit both dimensions; never scale above 1 (no upscaling on large screens)
+  const scale = Math.min(vw / DESIGN_W, vh / DESIGN_H, 1);
+
+  document.documentElement.style.setProperty('--scene-scale', scale);
+}
+
+// Run on load and whenever the window is resized (handles orientation change too)
+setSceneScale();
+window.addEventListener('resize', setSceneScale);
+
+// ============================================================
 //  SCENE TRANSITIONS
 // ============================================================
 
-/** Fade scene in/out */
 function showScene(el) {
   [sceneCard, sceneCafe].forEach(s => { s.classList.remove('active'); });
   el.classList.add('active');
@@ -71,25 +95,20 @@ function openCard() {
 
   btnOpenCard.style.display = 'none';
 
-  // Open flap
   envelopeFlap.classList.add('open');
 
-  // Slide letter out
   setTimeout(() => {
     envelopeLetter.classList.add('open');
   }, 300);
 
-  // Show letter text
   setTimeout(() => {
     letterContent.classList.add('visible');
   }, 700);
 
-  // Confetti burst
   setTimeout(() => {
     launchConfetti();
   }, 400);
 
-  // After reading, show "transition to cafe" button
   setTimeout(() => {
     const goBtn = document.createElement('button');
     goBtn.textContent = 'Enter the Café for a Surprise';
@@ -124,7 +143,6 @@ function launchConfetti(count = 60) {
     `;
     confettiCont.appendChild(piece);
   }
-  // Clear after animation
   setTimeout(() => { confettiCont.innerHTML = ''; }, 4000);
 }
 
@@ -140,16 +158,12 @@ function goToCafeScene() {
   setHudButton('cake', 'Click to bring out the cake!');
 }
 
-// ── HUD helper ──
 function setHudButton(nextAction, text) {
   hudText.textContent = text;
-  // Remove old click listener by replacing node
   const currentBtn = window._activeBtn || btnContinue;
   const newBtn = currentBtn.cloneNode(true);
   currentBtn.parentNode.replaceChild(newBtn, currentBtn);
-  // Re-assign reference (important!)
   window._activeBtn = newBtn;
-  // Reset display in case it was hidden
   newBtn.style.display = '';
 
   if (nextAction === 'cake') {
@@ -176,16 +190,8 @@ function setHudButton(nextAction, text) {
 
 function triggerCakeScene() {
   currentScene = 3;
-  // Girl presents cake — swap sprite (use same img with scale trick)
-  // removed glow
-
-  // Cake pops up
   cakeWrapper.classList.add('visible');
-
-  // Small pop effect
   spawnSparkles(400, 260, 4);
-
-  // Update HUD
   setHudButton('candle', '🕯️ Click the candle to blow it out!');
 }
 
@@ -193,17 +199,13 @@ function blowCandle() {
   if (!candleLit) return;
   candleLit = false;
 
-  // Hide flame
   candleFlame.classList.add('out');
 
-  // Show smoke
   smokePuff.classList.remove('hidden');
   setTimeout(() => { smokePuff.classList.add('hidden'); }, 1600);
 
-  // Proceed after short delay
   setTimeout(() => {
     setHudButton('gift', 'She has a surprise gift for you! 🎁');
-    // Make gift appear
     giftWrapper.classList.remove('hidden');
   }, 1800);
 }
@@ -223,28 +225,19 @@ function openGift() {
   if (giftOpened) return;
   giftOpened = true;
 
-  // Move gift to center first
   giftWrapper.classList.add('center');
 
-  // Wait for move to finish before opening
   setTimeout(() => {
-    // Swap gift image
     giftImg.src = 'assets/props/gift_open.png';
-    // removed glow
 
-    // Pop out items
     giftChocolate.classList.add('pop-out-1');
     giftMouse.classList.add('pop-out-2');
     giftFlowers.classList.add('pop-out-3');
     giftStand.classList.add('pop-out-4');
 
-    // Sparkle burst
     spawnSparkles(400, 260, 10);
 
-    // BF happy reaction
     setTimeout(() => {
-      // removed glow
-      // Bounce BF character
       bfChar.style.animation = 'char-bob 0.4s ease-in-out 3';
       setTimeout(() => { bfChar.style.animation = ''; }, 1200);
     }, 300);
@@ -264,23 +257,17 @@ function triggerCheers() {
   currentScene = 5;
   cheersTriggered = true;
 
-  // Hide the gift and its contents
   giftWrapper.classList.add('hidden');
-  
-  // Hide the cake
   cakeWrapper.classList.add('hidden');
 
-  // Characters cheer
   bfChar.classList.add('cheering');
   girlChar.classList.add('cheering');
 
-  // Move cups together
   coffeeCup.classList.add('clinking');
   chaiCup.classList.add('clinking');
   coffeeSteam.classList.add('clinking-steam');
   chaiSteam.classList.add('clinking-steam');
 
-  // Launch celebration effects
   launchConfetti(80);
   setTimeout(() => spawnHearts(), 400);
   setTimeout(() => spawnSparkles(400, 280, 14), 600);
@@ -290,7 +277,6 @@ function triggerCheers() {
   hudText.textContent = 'Cheers! 🥂❤️';
   if (window._activeBtn) window._activeBtn.style.display = 'none';
 
-  // Show final message banner after celebration
   setTimeout(() => showFinalMessage(), 2800);
 }
 
@@ -329,9 +315,10 @@ function restartAll() {
 
 // ============================================================
 //  EFFECT HELPERS
+//  Note: coordinates are in the scene-container's 800×560 space.
+//  JS transform scale handles visual sizing — no adjustments needed here.
 // ============================================================
 
-/** Spawn floating sparkle emojis */
 function spawnSparkles(cx, cy, count) {
   for (let i = 0; i < count; i++) {
     const el = document.createElement('div');
@@ -347,9 +334,9 @@ function spawnSparkles(cx, cy, count) {
   }
 }
 
-/** Spawn floating hearts */
 function spawnHearts() {
-  const positions = [200, 320, 400, 480, 580];
+  // Spread hearts across the 800px wide scene
+  const positions = [120, 260, 400, 540, 680];
   positions.forEach((x, i) => {
     const el = document.createElement('div');
     el.className = 'big-heart';
@@ -366,7 +353,7 @@ function spawnHearts() {
 }
 
 // ============================================================
-//  KEYBOARD SHORTCUT (Enter advances scene)
+//  KEYBOARD SHORTCUT (Enter/Space advances scene)
 // ============================================================
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter' || e.key === ' ') {
